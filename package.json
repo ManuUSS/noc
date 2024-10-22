@@ -18,6 +18,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "cron": "^3.1.7"
+    "cron": "^3.1.7",
+    "dotenv": "^16.4.5"
   }
 }
