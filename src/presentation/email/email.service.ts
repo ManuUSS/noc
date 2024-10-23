@@ -5,7 +5,12 @@ interface SendEmailOptions {
   to:       string;
   subject:  string;
   htmlBody: string;
-  // attachments?: Attachment[];
+  attachments?: Attachment[];
+}
+
+interface Attachment {
+  filename: string;
+  path: string;
 }
 
 export class EmailService {
