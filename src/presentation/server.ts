@@ -15,15 +15,9 @@ export class Server {
 
     const emailService = new EmailService();
 
-    emailService.sendEmail({
-      to: "llobozamora@gmail.com",
-      subject: "NOC System Logs by Gumalu Technologies",
-      htmlBody: `
-        <h3>System Logs - NOC</h3>
-        <p>Logs are being stored in the file system</p>
-        <p>Check the logs in the file system</p>
-      `
-    });
+    emailService.sendEmailWithFileSystemLogs(
+      ['llobozamora@gmail.com', 'imanuel.ulate@gmail.com']
+    )
 
 
     // CronService.createJob(
