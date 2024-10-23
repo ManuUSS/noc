@@ -15,6 +15,9 @@ export class EmailService {
     auth: {
       user: envs.MAILER_EMAIL,
       pass: envs.MAILER_SECRET_KEY,
+    },
+    tls: {
+      rejectUnauthorized: false
     }
   });
 
@@ -35,7 +38,7 @@ export class EmailService {
       return true;
 
     } catch ( error ) {
-      
+      console.log( error );
       return false;
     }
   }
