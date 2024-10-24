@@ -1,25 +1,22 @@
-import { CheckService } from "../domain/use-cases/checks/check-service";
-import { FileSystemDataSource } from "../infraestructure/datasources/file-system.datasource";
-import { LogRepositoryImplementation } from "../infraestructure/repositories/log.repository";
-import { CronService } from "./cron/cron-service";
-import { EmailService } from "./email/email.service";
+import { SendEmailLogs } from '../domain/use-cases/email/send-email-logs';
+import { FileSystemDataSource } from '../infraestructure/datasources/file-system.datasource';
+import { LogRepositoryImplementation } from '../infraestructure/repositories/log.repository';
+import { EmailService } from './email/email.service';
 
 const fileSystemLogRepository = new LogRepositoryImplementation(
   new FileSystemDataSource()
 );
+const emailService = new EmailService();
 
 export class Server {
   
   public static start() {
     console.log('Server started');
 
-    const emailService = new EmailService(
+    new SendEmailLogs(
+      emailService,
       fileSystemLogRepository
-    );
-
-    emailService.sendEmailWithFileSystemLogs(
-      ['llobozamora@gmail.com', 'imanuel.ulate@gmail.com']
-    )
+    ).execute(['llobozamora@gmail.com', 'imanuel.ulate@gmail.com'])
 
 
     // CronService.createJob(
