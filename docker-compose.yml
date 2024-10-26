@@ -12,4 +12,12 @@ services:
       - ./mongo:/date/db
     ports:
       - 27017:27017
+    
+  postgres-db:
+    image: postgres:15.3
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
 
