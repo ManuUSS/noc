@@ -3,13 +3,15 @@ import { CheckService } from '../domain/use-cases/checks/check-service';
 import { SendEmailLogs } from '../domain/use-cases/email/send-email-logs';
 import { FileSystemDataSource } from '../infraestructure/datasources/file-system.datasource';
 import { MongoLogDataSource } from '../infraestructure/datasources/mongo-log.datasource';
+import { PostgreSQLLogDataSource } from '../infraestructure/datasources/postgresql-log.datasource';
 import { LogRepositoryImplementation } from '../infraestructure/repositories/log.repository';
 import { CronService } from './cron/cron-service';
 import { EmailService } from './email/email.service';
 
 const logRepository = new LogRepositoryImplementation(
   // new FileSystemDataSource()
-  new MongoLogDataSource()
+  // new MongoLogDataSource()
+  new PostgreSQLLogDataSource()
 );
 const emailService = new EmailService();
 
