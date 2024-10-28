@@ -41,4 +41,24 @@ describe('log.model.ts', () => {
 
   });
 
+  test('should return the schema object', () => {
+
+    const schema = LogModel.schema.obj;
+
+    expect( schema ).toEqual( expect.objectContaining(
+      {
+        message: { type: expect.any(Function), required: true },
+        origin: { type: expect.any(Function) },
+        level: {
+          type: expect.any(Function),
+          enum: [ 'low', 'medium', 'high' ],
+          default: 'low'
+        },
+        createdAt: expect.any(Object)
+      }
+    ))
+
+  });
+
+
 });
