@@ -39,6 +39,8 @@ describe('log.model.ts', () => {
       })
     );
 
+    await LogModel.findByIdAndDelete( logModel._id );
+
   });
 
   test('should return the schema object', () => {
