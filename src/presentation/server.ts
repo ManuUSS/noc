@@ -1,5 +1,6 @@
 import { LogSeverityLevel } from '../domain/entities/log.entity';
 import { CheckService } from '../domain/use-cases/checks/check-service';
+import { CheckServiceMultiple } from '../domain/use-cases/checks/check-service-multiple';
 import { SendEmailLogs } from '../domain/use-cases/email/send-email-logs';
 import { FileSystemDataSource } from '../infraestructure/datasources/file-system.datasource';
 import { MongoLogDataSource } from '../infraestructure/datasources/mongo-log.datasource';
@@ -8,11 +9,19 @@ import { LogRepositoryImplementation } from '../infraestructure/repositories/log
 import { CronService } from './cron/cron-service';
 import { EmailService } from './email/email.service';
 
-const logRepository = new LogRepositoryImplementation(
-  // new FileSystemDataSource()
-  // new MongoLogDataSource()
+const fsLogRepository = new LogRepositoryImplementation(
+  new FileSystemDataSource()
+);
+
+const mongoLogRepository = new LogRepositoryImplementation(
+  new MongoLogDataSource()
+);
+
+const postgreLogRepository = new LogRepositoryImplementation(
   new PostgreSQLLogDataSource()
 );
+
+
 const emailService = new EmailService();
 
 export class Server {
@@ -30,15 +39,15 @@ export class Server {
       '*/3 * * * * *', 
       () => {
         const url = 'https://google.com';
-        new CheckService(
-          logRepository,
+        new CheckServiceMultiple(
+          [ fsLogRepository, mongoLogRepository, postgreLogRepository ],
           () => console.log(`${url} is available`), 
           (error) => console.log(`Error: ${error}`)
         ).execute( url );
       }
     ).start();
 
-    const logs = await logRepository.getLogs( LogSeverityLevel.high );
+    const logs = await fsLogRepository.getLogs( LogSeverityLevel.high );
     console.log( logs );
   }
 
