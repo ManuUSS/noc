@@ -3,8 +3,11 @@
 /dist
 
 .env
+.env.test
 .DS_Store
 
 /logs
 /mongo
 /postgres
+/mongo-test
+/postgres-test
