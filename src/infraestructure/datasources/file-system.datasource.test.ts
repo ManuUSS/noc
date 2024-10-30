@@ -61,5 +61,24 @@ describe('file-system.datasource.ts', () => {
 
   });
 
+  test('should save a log in logs-all.log and logs-high.log', () => {
+
+    const logDataSource = new FileSystemDataSource();
+    const log = new LogEntity({
+      message: 'test message',
+      level: LogSeverityLevel.high,
+      origin: 'file-system.datasource.test.ts',
+    });
+
+    logDataSource.saveLog( log );
+
+    const allLogs = fs.readFileSync( `${ logPath }/logs-all.log`, 'utf-8' );
+    const highLogs = fs.readFileSync( `${ logPath }/logs-high.log`, 'utf-8' );
+
+    expect( allLogs ).toContain( JSON.stringify( log ) );
+    expect( highLogs ).toContain( JSON.stringify( log ) );
+
+  });
+
 
 });
