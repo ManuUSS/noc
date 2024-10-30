@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { FileSystemDataSource } from './file-system.datasource';
+import { LogEntity, LogSeverityLevel } from '../../domain/entities/log.entity';
 
 
 
@@ -21,6 +22,25 @@ describe('file-system.datasource.ts', () => {
 
     expect( files.length ).toBe( 3 );
     expect( files ).toEqual(['logs-all.log', 'logs-medium.log', 'logs-high.log']);
+
+  });
+
+  test('should save a log in the right file', () => {
+
+    const logDataSource = new FileSystemDataSource();
+    const log = new LogEntity({
+      message: 'test message',
+      level: LogSeverityLevel.low,
+      origin: 'file-system.datasource.test.ts',
+    });
+
+    logDataSource.saveLog( log );
+
+    const allLogs = fs.readFileSync( `${ logPath }/logs-all.log`, 'utf-8' );
+
+    expect( allLogs ).toContain( JSON.stringify( log ) );
+    
+
 
   });
 
