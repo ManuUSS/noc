@@ -39,8 +39,25 @@ describe('file-system.datasource.ts', () => {
     const allLogs = fs.readFileSync( `${ logPath }/logs-all.log`, 'utf-8' );
 
     expect( allLogs ).toContain( JSON.stringify( log ) );
-    
 
+  });
+
+  test('should save a log in logs-all.log and logs-medium.log', () => {
+
+    const logDataSource = new FileSystemDataSource();
+    const log = new LogEntity({
+      message: 'test message',
+      level: LogSeverityLevel.medium,
+      origin: 'file-system.datasource.test.ts',
+    });
+
+    logDataSource.saveLog( log );
+
+    const allLogs = fs.readFileSync( `${ logPath }/logs-all.log`, 'utf-8' );
+    const mediumLogs = fs.readFileSync( `${ logPath }/logs-medium.log`, 'utf-8' );
+
+    expect( allLogs ).toContain( JSON.stringify( log ) );
+    expect( mediumLogs ).toContain( JSON.stringify( log ) );
 
   });
 
