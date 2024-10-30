@@ -114,4 +114,20 @@ describe('file-system.datasource.ts', () => {
 
   });
 
+  test('should throw an error if severity level is not defined', async() => {
+
+    const logDataSource = new FileSystemDataSource();
+    const customSeverityLevel = 'SUPER_MEGA_HIGH' as LogSeverityLevel;
+
+    try {
+      await logDataSource.getLogs(customSeverityLevel);
+      expect(true).toBeFalsy();
+    } catch (error) {
+      const errorString = `${ error }`;
+      
+      expect(errorString).toContain(` Severity level not implemented: ${ customSeverityLevel }`);
+    }
+
+  });
+
 });
